@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title >Real-Time Data Dashboard</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+</head>
+<body>
+    <button onclick="onChartClick()">STOP</button>
+    <canvas id="dataChart" width="400" height="200"></canvas>
+
+    <script>
+        const dataChart =new Chart(document.getElementById("dataChart"), {
+            type: "line",
+            data: {
+              labels: [],
+              datasets: [
+                  {label: "Real time data", data: [], borderColor: "blue", borderWith: 1, fill: false}
+              ],
+              options: {
+                  scales: {
+                      x: {display: false}
+                  }
+              }
+            },
+        });
+
+        const ws = new WebSocket("ws://localhost:8080/ws")
+
+        ws.onmessage = (event) => {
+            const data = JSON.parse(event.data);
+            dataChart.data.labels.push("");
+            dataChart.data.datasets[0].data.push(data.value);
+            dataChart.update()
+        }
+
+        function onChartClick () {
+            ws.send("stop");
+            dataChart.update();
+        }
+    </script>
+</body>
+</html>
