@@ -8,3 +8,5 @@ reports/
 venv/
 
 .idea/
+
+.DS_
