@@ -5,7 +5,6 @@ queue = deque()
 
 def counter():
     counter = 0
-
     while True:
         print(counter)
         counter += 1
@@ -20,7 +19,6 @@ def printer():
         yield
 
 def main():
-
     while True:
         g = queue.popleft()
         next(g)
